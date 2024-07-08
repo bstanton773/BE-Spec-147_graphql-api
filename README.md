@@ -21,5 +21,5 @@ pip install flask-sqlalchemy
 pip install flask-migrate
 pip install graphene
 pip install --pre graphene-sqlalchemy
-pip install "graph-server[flask]"
+pip install "graphql-server[flask]"
 ```
