@@ -12,6 +12,19 @@ class PostType(SQLAlchemyObjectType):
     class Meta:
         model = PostModel
 
+class AddNewUser(graphene.Mutation):
+    class Arguments:
+        username = graphene.String(required=True)
+        email = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    user = graphene.Field(UserType)
+
+    def mutate(root, info, username, email, password):
+        new_user = UserModel(username=username, email=email, password=password)
+        return AddNewUser(user=new_user)
+
+
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     posts = graphene.List(PostType)
@@ -39,4 +52,8 @@ class Query(graphene.ObjectType):
         return db.session.scalars(query)
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(graphene.ObjectType):
+    add_new_user = AddNewUser.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
